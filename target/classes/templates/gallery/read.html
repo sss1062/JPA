@@ -1,0 +1,82 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layouts/main_template">
+
+<head>
+	<title>갤러리</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div layout:fragment="content" id="boardContent">
+	<!-- <h2 th:text="#{board.header.read}">회원게시판 상세보기</h2> -->
+	
+	<form id="board" action="list.html" th:action="@{/gallery/remove}" th:object="${gallery}" method="POST" class="readForm">
+		<input type="hidden" name="galleryNo" th:field="*{galleryNo}" />
+		<input type="hidden" name="page" th:value="${pgrq.page}" />
+		<input type="hidden" name="sizePerPage" th:value="${pgrq.sizePerPage}" />
+		
+		<input type="hidden" name="searchType" th:value="${pgrq.searchType}" />
+		<input type="hidden" name="keyword" th:value="${pgrq.keyword}" />
+	
+		<div class="readTop">
+			<h2 th:text="*{title}" class="readTitle">글제목</h2>
+			<div class="readWriter">작성자 <span th:text="*{writer}" ></span></div>
+		</div>
+		
+		<div class="readContent">
+			[(*{content})]
+		</div>
+	</form>
+	
+	<div th:with="pinfo=${#authentication.principal}">
+		
+		<th:block sec:authorize="hasRole('ADMIN')">
+			<button type="submit" id="btnRemove" th:text="#{action.remove}" class="boardBtn2">삭제</button>
+		</th:block>
+	
+		<th:block sec:authorize="hasRole('MEMBER')">
+	       <th:block th:if="${pinfo.username eq gallery.writer}">
+	       	<button type="submit" id="btnEdit" th:text="#{action.edit}" class="boardBtn">편집</button>
+	       	<button type="submit" id="btnRemove" th:text="#{action.remove}" class="boardBtn2">삭제</button>
+	       </th:block>
+		</th:block>
+	
+		<button type="submit" id="btnList" th:text="#{action.list}" class="boardBtn2">목록으로</button>
+	</div>
+	
+	<script>
+		$(document).ready(function() {
+	
+			var formObj = $("#board");
+			
+			var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            $(document).ajaxSend(function(e, xhr, options){
+                xhr.setRequestHeader(header, token);
+            });
+	
+			$("#btnEdit").on("click", function() {
+				var galleryNo = $("#galleryNo");
+				var galleryNoVal = galleryNo.val();
+				
+				self.location = "/gallery/modify[(${pgrq.toUriString()})]" + "&galleryNo=" + galleryNoVal;
+			});
+	
+			$("#btnRemove").on("click", function() {
+				formObj.attr("action", "/gallery/remove");
+				formObj.submit();
+			});
+	
+			$("#btnList").on("click", function() {
+				self.location = "/gallery/list[(${pgrq.toUriString()})]";
+			});
+	
+		});
+	</script>
+</div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layouts/main_template">
+
+<head>
+	<title>갤러리</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{gallery.header.list}" class="boardTitle">갤러리</h2>
+	
+	<th:block sec:authorize="hasRole('MEMBER')">
+		<div class="writeBtn">
+			<a href="register.html" th:href="@{/gallery/register}" th:text="#{action.new}">글쓰기</a>
+		</div>
+	</th:block>
+	
+	<ul class="boardList" th:with="galleryList=${pgntn.page.content}">
+		<li class="ListTitle">
+			<div th:text="#{board.no}">번호</div>
+			<div th:text="#{board.title}">제목</div>
+			<div th:text="#{board.writer}">작성자</div>
+			<div th:text="#{board.view}">조회수</div>
+			<div th:text="#{board.regdate}">등록일시</div>
+		</li>
+		<li th:if="${#lists.isEmpty(galleryList)}">
+			List is empty.
+		</li>
+		
+		<li th:each="gallery : ${galleryList}">
+			<div th:text="${gallery.galleryNo}">${gallery.galleryNo}</div>
+			<div><a href="read.html" th:href="@{|/gallery/read${pgrq.toUriString()}&galleryNo=${gallery.galleryNo}|}" th:text="${gallery.title}">${gallery.title}</a></div>
+			<div style="width:100px;height:100px;" th:utext="|<img width=100px height=100px src=${gallery.content}>|"></div>
+			<div th:text="${gallery.writer}">${gallery.writer}</div>
+			<div><span class="viewText" th:text="${gallery.view}">${gallery.view}</span></div>
+			<div th:text="${#temporals.format(gallery.regDate, 'yy/MM/dd HH:mm')}">등록일시</div>
+		</li>
+	</ul>
+	
+	<div class="paging">
+		<th:block th:if="${pgntn.prevPageable}" class="pagingArrow">
+			<a th:href="@{|/gallery/list${pgrq.toUriStringByPage(pgntn.prevPageable.pageNumber + 1)}|}">◀</a>
+		</th:block>
+
+		<th:block th:each="p:${pgntn.pageableList}">
+			<a href="list.html" th:href="@{|/gallery/list${pgrq.toUriStringByPage(p.pageNumber + 1)}|}" th:class="${p.pageNumber}+1 == ${pgrq.page} ? 'pagingBtn'">[[${p.pageNumber} + 1]]</a>
+		</th:block>
+
+		<th:block th:if="${pgntn.nextPageable}" class="pagingArrow">
+			<a href="list.html" th:href="@{|/gallery/list${pgrq.toUriStringByPage(pgntn.nextPageable.pageNumber + 1)}|}">▶</a>
+		</th:block>
+	</div>
+	
+	
+	<form id="pgrq" action="list.html" th:action="@{|/gallery/list${pgrq.toUriStringForSearchAction(1)}|}" th:object="${pgrq}" method="GET">
+		<select th:field="*{searchType}" class="searchOption">
+			<option th:each="element : ${searchTypeCodeValueList}" th:value="${element.value}" th:text="${element.label}">제목</option>
+		</select>
+		
+		<input type="text" name="keyword" th:field="*{keyword}" class="searchText" />
+		<button id="searchBtn" th:text="#{action.search}">검색</button>
+	</form>
+	
+	<!-- <script th:inline="javascript">
+		var result = [[${msg}]];
+		
+		if (result === "SUCCESS") {
+			alert([[#{common.processSuccess}]]);
+		}
+	</script> -->
+</div>
+</body>
+</html>

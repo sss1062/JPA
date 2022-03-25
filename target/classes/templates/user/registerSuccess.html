@@ -1,0 +1,19 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layouts/common_template">
+  
+<head>
+	<title>User</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+</head>
+<body>
+<div layout:fragment="content">
+	<div class="nickName">
+		<span th:text="#{common.joinMemberSuccess(${userName})}">{0}님</span>님
+		<p class="joinMsg">가입을 축하드립니다.</p>
+	</div>
+	<a href="../auth/loginForm.html" th:href="@{/auth/login}" th:text="#{action.login}" class="joinBtn">로그인</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<body>
+	<!-- <div align="right" th:fragment="header">
+		<table>
+			<tr sec:authorize="!isAuthenticated()">
+				<td width="80"><a href="../user/register.html" th:href="@{/user/register}" th:text="#{header.joinMember}">회원가입</a></td>
+				<td width="80"><a href="../auth/loginForm.html" th:href="@{/auth/login}" th:text="#{header.login}">로그인</a></td>
+			</tr>
+			
+			<tr sec:authorize="isAuthenticated()">
+				<td width="180">
+					<form action="../auth/logout.html" th:action="@{/auth/logout}" method="POST">
+						<span sec:authentication="principal.username">홍길동</span>님 <button th:text="#{header.logout}">로그아웃</button>
+					</form>
+				</td>
+			</tr>
+		</table>
+	</div> -->
+	<header id="header" th:fragment="header">
+        <nav class="whiteline">
+            <div class="logo"><a href="../home.html" th:href="@{/}"><img src="/image/logo.png" alt="로고" th:src="@{/image/logo.png}" /> <span>starful</span></a></div>
+            <ul class="nav_section2">
+                <li> <a href="../sub/sub01.html" th:href="@{/sub/sub01}">별자리 정보</a> </li>
+                <li> 
+                    <a href="../board/list.html" th:href="@{/board/list}">커뮤니티</a>
+                    <ul class="subMenu">
+                        <li><a href="../board/list.html" th:href="@{/board/list}">자유게시판</a></li>
+                        <li><a href="../gallery/list.html" th:href="@{/gallery/list}">갤러리</a></li>
+                    </ul>
+                </li>
+                <li> <a href="">차박 예약하기</a> </li>
+                <li class="login"  sec:authorize="!isAuthenticated()">
+                	<span><a href="../auth/loginForm.html" th:href="@{/auth/login}" th:text="#{header.login}">로그인</a></span>
+                	<span><a href="../user/register.html" th:href="@{/user/register}" th:text="#{header.joinMember}">회원가입</a></span>
+                </li>
+                <li class="login"  sec:authorize="isAuthenticated()">
+                	<form action="../auth/logout.html" th:action="@{/auth/logout}" method="POST">
+						<span sec:authentication="principal.username">홍길동</span>님 <button th:text="#{header.logout}">로그아웃</button>
+					</form>
+                </li>
+            </ul>
+            <div class="menubar"><img src="/image/menubar.png" alt="메뉴바"></div>
+        </nav>
+    </header>
+</body>
+</html>

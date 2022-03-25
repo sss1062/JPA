@@ -1,0 +1,130 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <link rel="stylesheet" href="/css/default.css">
+    <link rel="stylesheet" href="/css/sub.css">
+    <script src="/js/jQuery-2.1.4.min.js"></script>
+    <script src="/js/common.js"></script>
+    <title>별자리 정보</title>	
+</head>
+<body>
+	<header id="header">
+        <nav class="whiteline">
+            <div class="logo"><a href="../home.html" th:href="@{/}"><img src="/image/logo.png" alt="로고" th:src="@{/image/logo.png}" /> <span>starful</span></a></div>
+            <ul class="nav_section2">
+                <li> <a href="../sub/sub01.html" th:href="@{/sub/sub01}">별자리 정보</a> </li>
+                <li> 
+                    <a href="../board/list.html" th:href="@{/board/list}">커뮤니티</a>
+                    <ul class="subMenu">
+                        <li><a href="../board/list.html" th:href="@{/board/list}">자유게시판</a></li>
+                        <li><a href="">갤러리</a></li>
+                    </ul>
+                </li>
+                <li> <a href="">차박 예약하기</a> </li>
+                <li class="login"  sec:authorize="!isAuthenticated()">
+                	<span><a href="../auth/loginForm.html" th:href="@{/auth/login}" th:text="#{header.login}">로그인</a></span>
+                	<span><a href="../user/register.html" th:href="@{/user/register}" th:text="#{header.joinMember}">회원가입</a></span>
+                </li>
+                <li class="login"  sec:authorize="isAuthenticated()">
+                	<form action="../auth/logout.html" th:action="@{/auth/logout}" method="POST">
+						<span sec:authentication="principal.username">홍길동</span>님 <button th:text="#{header.logout}">로그아웃</button>
+					</form>
+                </li>
+            </ul>
+            <div class="menubar"><img src="/image/menubar.png" alt="메뉴바"></div>
+        </nav>
+    </header>
+    <div id="sub01">
+        <div class="container">
+            <div>
+                <a href="">
+                    <img src="/image/sub01_img01.png" alt="양자리">
+                    <p>양자리</p>
+                </a>
+            </div>
+            <div>
+                <a href="">
+                    <img src="/image/sub01_img02.png" alt="황소자리">
+                    <p>황소자리</p>
+                </a>
+            </div>
+            <div>
+                <a href="">
+                    <img src="/image/sub01_img03.png" alt="쌍둥이자리">
+                    <p>쌍둥이자리</p>
+                </a>
+            </div>
+            <div>
+                <a href="">
+                    <img src="/image/sub01_img04.png" alt="게자리">
+                    <p>게자리</p>
+                </a>
+            </div>
+            <div>
+                <a href="">
+                    <img src="/image/sub01_img05.png" alt="사자자리">
+                    <p>사자자리</p>
+                </a>
+            </div>
+            <div>
+                <a href="">
+                    <img src="/image/sub01_img06.png" alt="처녀자리">
+                    <p>처녀자리</p>
+                </a>
+            </div>
+            <div>
+                <a href="">
+                    <img src="/image/sub01_img07.png" alt="천칭자리">
+                    <p>천칭자리</p>
+                </a>
+            </div>
+            <div>
+                <a href="">
+                    <img src="/image/sub01_img08.png" alt="전갈자리">
+                    <p>전갈자리</p>
+                </a>
+            </div>
+            <div>
+                <a href="">
+                    <img src="/image/sub01_img09.png" alt="궁수자리">
+                    <p>궁수자리</p>
+                </a>
+            </div>
+            <div>
+                <a href="">
+                    <img src="/image/sub01_img10.png" alt="염소자리">
+                    <p>염소자리</p>
+                </a>
+            </div>
+            <div>
+                <a href="">
+                    <img src="/image/sub01_img11.png" alt="물병자리">
+                    <p>물병자리</p>
+                </a>
+            </div>
+            <div>
+                <a href="">
+                    <img src="/image/sub01_img12.png" alt="물고기자리">
+                    <p>물고기자리</p>
+                </a>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="ftext">
+                주소: 대전광역시 서구 용문동 594-1 7층 아이티스쿨<br>
+                대표전화: 000-111-2222
+               	<p>Copyright STARFUL. All rights reserved</p>
+            </div>
+            <div class="flogo">
+                <img src="/image/logo.png" alt="로고"> <span>starful</span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

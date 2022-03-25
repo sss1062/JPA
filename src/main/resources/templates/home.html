@@ -1,0 +1,105 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<!-- layout:decorate="layouts/main_template"> -->
+
+<head>
+	<title>Home</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+	<link rel="stylesheet" href="/css/default.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/jQuery-2.1.4.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="/js/wheel.js"></script>
+    <script src="/js/common.js"></script>
+</head>
+<body>
+	 <div id="starbar" class="col-md-push-11 col-md-1">
+        <ul class="whitestar">
+            <li class="active circle" ><a href="#"><div>★</div></a></li>
+            <li><a href="#"><div>★</div></a></li>
+            <li><a href="#"><div>★</div></a></li>
+        </ul>
+    </div>
+	<header id="header">
+        <nav class="whiteline">
+            <div class="logo"><a href="../home.html" th:href="@{/}"><img src="/image/logo.png" alt="로고" th:src="@{/image/logo.png}" /> <span>starful</span></a></div>
+            <ul class="nav_section2">
+                <li> <a href="../sub/sub01.html" th:href="@{/sub/sub01}">별자리 정보</a> </li>
+                <li> 
+                    <a href="../board/list.html" th:href="@{/board/list}">커뮤니티</a>
+                    <ul class="subMenu">
+                        <li><a href="../board/list.html" th:href="@{/board/list}">자유게시판</a></li>
+                        <li><a href="../gallery/list.html" th:href="@{/gallery/list}">갤러리</a></li>
+                    </ul>
+                </li>
+                <li> <a href="">차박 예약하기</a> </li>
+                <li class="login"  sec:authorize="!isAuthenticated()">
+                	<span><a href="../auth/loginForm.html" th:href="@{/auth/login}" th:text="#{header.login}">로그인</a></span>
+                	<span><a href="../user/register.html" th:href="@{/user/register}" th:text="#{header.joinMember}">회원가입</a></span>
+                </li>
+                <li class="login"  sec:authorize="isAuthenticated()">
+                	<form action="../auth/logout.html" th:action="@{/auth/logout}" method="POST">
+						<span sec:authentication="principal.username">홍길동</span>님 <button th:text="#{header.logout}">로그아웃</button>
+					</form>
+                </li>
+            </ul>
+            <div class="menubar"><img src="/image/menubar.png" alt="메뉴바"></div>
+        </nav>
+    </header>
+    <div class="content">
+        <div class="section" id="section1" oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+            <div class="section1text">
+                <span>
+                    하늘의 모든 별은<br>
+                    어느 누군가에게는<br>
+                    태양과 같은 존재이다.
+                </span>
+            </div>
+        </div>
+        <div class="section" id="section2">
+            <h2>커뮤니티</h2>
+            <div class="boxWrap">
+                <div>
+                    <a href="../board/list.html" th:href="@{/board/list}">
+                        <img src="/image/section2_img01.jpg" alt="자유게시판">
+                        <p>자유게시판</p>
+                    </a>
+                </div>
+                <div>
+                    <a href="../gallery/list.html" th:href="@{/gallery/list}">
+                        <img src="/image/section2_img02.jpg" alt="갤러리">
+                        <p style="color:#fff;">갤러리</p>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <div class="section" id="section3">
+            <div class="section3Text">
+                <h2>차박으로 즐기는 힐링</h2>
+                <a href=""><span>차박 예약하기</span></a>
+            </div>
+        </div>
+        <div class="section">
+            <footer class="footer">
+                <div class="ftext">
+                    주소: 대전광역시 서구 용문동 594-1 7층 아이티스쿨<br>
+                    대표전화: 000-111-2222
+                    <p>Copyright STARFUL. All rights reserved</p>
+                </div>
+                <div class="flogo">
+                    <img src="/image/logo.png" alt="로고"> <span>starful</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+<!-- <div layout:fragment="content">
+	<h1 th:text="#{common.homeWelcome}">Image Shop에 오신 것을 환영합니다.</h1>
+	
+	<p th:text="${serverTime}">시간 표시</p>
+</div> -->
+</body>
+</html>

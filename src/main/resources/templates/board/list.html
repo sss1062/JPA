@@ -1,0 +1,84 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layouts/main_template">
+
+<head>
+	<title>자유게시판</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div layout:fragment="content">
+	<h2 th:text="#{board.header.list}" class="boardTitle">자유게시판</h2>
+	
+	<th:block sec:authorize="hasRole('MEMBER')">
+		<div class="writeBtn">
+			<a href="register.html" th:href="@{/board/register}" th:text="#{action.new}">글쓰기</a>
+		</div>
+	</th:block>
+	
+	<ul class="boardList" th:with="boardList=${pgntn.page.content}">
+		<li class="ListTitle">
+			<div th:text="#{board.no}">번호</div>
+			<div th:text="#{board.title}">제목</div>
+			<div th:text="#{board.writer}">작성자</div>
+			<div th:text="#{board.view}">조회수</div>
+			<div th:text="#{board.regdate}">등록일시</div>
+		</li>
+		<li th:if="${#lists.isEmpty(boardList)}">
+			List is empty.
+		</li>
+		
+		<li th:each="notice : ${noticeList}" class="boardNotice">
+			<div><span class="noticeLabel">공지</span></div>
+			<div><a href="read.html" th:href="@{|/notice/read?noticeNo=${notice.noticeNo}|}" th:text="${notice.title}">${notice.title}</a></div>
+			<div th:text="#{notice.writer}">관리자</div>
+			<div><span class="viewText" th:text="${notice.view}">조회수</span></div>
+			<div th:text="${#temporals.format(notice.regDate, 'yy/MM/dd HH:mm')}"></div>
+		</li>
+		
+		<li th:each="board : ${boardList}">
+			<div th:text="${board.boardNo}">${board.boardNo}</div>
+			<div><a href="read.html" th:href="@{|/board/read${pgrq.toUriString()}&boardNo=${board.boardNo}|}" th:text="${board.title}">${board.title}</a></div>
+			<div th:text="${board.writer}">${board.writer}</div>
+			<div><span class="viewText" th:text="${board.view}">${board.view}</span></div>
+			<div th:text="${#temporals.format(board.regDate, 'yy/MM/dd HH:mm')}">등록일시</div>
+		</li>
+	</ul>
+	
+	<div class="paging">
+		<th:block th:if="${pgntn.prevPageable}" class="pagingArrow">
+			<a th:href="@{|/board/list${pgrq.toUriStringByPage(pgntn.prevPageable.pageNumber + 1)}|}">◀</a>
+		</th:block>
+
+		<th:block th:each="p:${pgntn.pageableList}">
+			<a href="list.html" th:href="@{|/board/list${pgrq.toUriStringByPage(p.pageNumber + 1)}|}" th:class="${p.pageNumber}+1 == ${pgrq.page} ? 'pagingBtn'">[[${p.pageNumber} + 1]]</a>
+            <!-- <a href="list.html" th:href="@{|/board/list${pgrq.toUriStringByPage(p.pageNumber + 1)}|}"><span th:unless="${p.pageNumber}+1 == ${pgrq.page}">[[${p.pageNumber} + 1]]</span></a> -->
+		</th:block>
+
+		<th:block th:if="${pgntn.nextPageable}" class="pagingArrow">
+			<a href="list.html" th:href="@{|/board/list${pgrq.toUriStringByPage(pgntn.nextPageable.pageNumber + 1)}|}">▶</a>
+		</th:block>
+	</div>
+	
+	
+	<form id="pgrq" action="list.html" th:action="@{|/board/list${pgrq.toUriStringForSearchAction(1)}|}" th:object="${pgrq}" method="GET">
+		<select th:field="*{searchType}" class="searchOption">
+			<option th:each="element : ${searchTypeCodeValueList}" th:value="${element.value}" th:text="${element.label}">제목</option>
+		</select>
+		
+		<input type="text" name="keyword" th:field="*{keyword}" class="searchText" />
+		<button id="searchBtn" th:text="#{action.search}">검색</button>
+	</form>
+	
+	<!-- <script th:inline="javascript">
+		var result = [[${msg}]];
+		
+		if (result === "SUCCESS") {
+			alert([[#{common.processSuccess}]]);
+		}
+	</script> -->
+</div>
+</body>
+</html>

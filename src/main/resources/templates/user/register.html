@@ -1,0 +1,73 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="layouts/common_template">
+
+<head>
+	<title>User</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>	
+</head>
+<body>
+<div layout:fragment="content">
+	
+	<form id="member" class="joinFrom" action="list.html" th:action="@{/user/register}" th:object="${member}" method="POST">
+		
+		<h2 class="joinTitle" th:text="#{user.header.register}">회원가입</h2>
+		<table>
+			<tr>
+				<!-- <td th:text="#{user.userId}">아이디</td> -->
+				<td><input type="text" name="userId" th:field="*{userId}" placeholder="아이디" class="joinInput" /></td>
+				<td><span class="error_message" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">userId의 에러 메시지</span></td>
+			</tr>
+			<tr>
+				<!-- <td th:text="#{user.userPw}">비밀번호</td> -->
+				<td><input type="password" name="userPw" th:field="*{userPw}" placeholder="비밀번호" class="joinInput" /></td>
+				<td><span class="error_message" th:if="${#fields.hasErrors('userPw')}" th:errors="*{userPw}">userPw의 에러 메시지</span></td>
+			</tr>
+			<tr>
+				<!-- <td th:text="#{user.userName}">닉네임</td> -->
+				<td><input type="text" name="userName" th:field="*{userName}" placeholder="닉네임" class="joinInput" /></td>
+				<td><span class="error_message" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">userName의 에러 메시지</span></td>
+			</tr>
+			<tr style="display:none;">
+				<td th:text="#{user.job}">직업</td>
+				<td>
+					<select th:field="*{job}">
+						<option th:value="'학생'" th:text = "Student"></option>
+						<option th:each="item : ${jobList}" th:value="${item.value}" th:text="${item.label}"></option>
+					</select>
+				</td>
+				<td><span class="error_message" th:if="${#fields.hasErrors('job')}" th:errors="*{job}">job의 에러 메시지</span></td>
+			</tr>
+		</table>
+	
+		<div style="margin-top:20px;">
+			<button type="submit" id="btnRegister" th:text="#{action.join}" class="joinBtn">가입하기</button>
+			
+			<!-- <th:block sec:authorize="hasRole('ADMIN')">
+				<button type="submit" id="btnList" th:text="#{action.list}">목록</button>
+			</th:block> -->
+		</div>
+	</form>
+	
+	<script th:inline="javascript">
+		$(document).ready(function() {
+	
+			var formObj = $("#member");
+	
+			$("#btnRegister").on("click", function() {
+				formObj.submit();
+			});
+			
+		[#th:block sec:authorize="hasRole('ADMIN')"]
+			$("#btnList").on("click", function() {
+				self.location = "list";
+			});
+		[/th:block]
+	
+		});
+	</script>
+</div>
+</body>
+</html>
