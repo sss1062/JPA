@@ -10,12 +10,10 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 import org.hdcd.common.security.domain.CustomUser;
 import org.hdcd.domain.Board;
-import org.hdcd.domain.Comment;
 import org.hdcd.domain.Member;
 import org.hdcd.dto.CodeLabelValue;
 import org.hdcd.dto.PaginationDTO;
 import org.hdcd.service.BoardService;
-import org.hdcd.service.CommentService;
 import org.hdcd.service.NoticeService;
 import org.hdcd.vo.PageRequestVO;
 import org.jsoup.Jsoup;
@@ -30,9 +28,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -50,7 +46,6 @@ public class BoardController {
 
 	private final BoardService service;
 	private final NoticeService noticeService;
-	private final CommentService commentService;
 
 	@GetMapping("/register")
 	@PreAuthorize("hasRole('MEMBER')")
@@ -128,30 +123,15 @@ public class BoardController {
 	}
 
 	@GetMapping("/read")
-	public void read(Long boardNo, @ModelAttribute("pgrq") PageRequestVO pageRequestVO, Model model, Authentication authentication) throws Exception {
+	public void read(Long boardNo, @ModelAttribute("pgrq") PageRequestVO pageRequestVO, Model model) throws Exception {
 		service.updateView(boardNo);
-		try
-		{
-			if(!authentication.getPrincipal().equals(null))
-			{
-				CustomUser customUser = (CustomUser) authentication.getPrincipal();
-				Member member = customUser.getMember();
-				Comment comment = new Comment();
-				comment.setWriter(member.getUserId());
-				model.addAttribute(comment);
-			}
-		}
-		catch(Exception e)
-		{
-			
-		}
-		
 		model.addAttribute(service.read(boardNo));
 	}
 
 	@PostMapping("/remove")
 	@PreAuthorize("(hasRole('MEMBER') and principal.username == #writer) or hasRole('ADMIN')")
 	public String remove(Long boardNo, PageRequestVO pageRequestVO, RedirectAttributes rttr, String writer) throws Exception {
+		System.out.println(boardNo);
 		service.remove(boardNo);
 
 		rttr.addAttribute("page", pageRequestVO.getPage());
@@ -188,6 +168,5 @@ public class BoardController {
 
 		return "redirect:/board/list";
 	}	
-	
 	
 }

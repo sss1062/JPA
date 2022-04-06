@@ -12,9 +12,11 @@
 </head>
 <body>
 <div layout:fragment="content" id="boardContent">
+	<!-- <h2 th:text="#{board.header.read}">회원게시판 상세보기</h2> -->
 	
 	<form id="board" action="list.html" th:action="@{/board/remove}" th:object="${board}" method="POST" class="readForm">
 		<input type="hidden" name="boardNo" th:field="*{boardNo}" />
+		<input type="hidden" name="writer" th:field="*{writer}" />
 		<input type="hidden" name="page" th:value="${pgrq.page}" />
 		<input type="hidden" name="sizePerPage" th:value="${pgrq.sizePerPage}" />
 		
@@ -29,6 +31,20 @@
 		<div class="readContent">
 			[(*{content})]
 		</div>
+		<!-- <table>
+			<tr>
+				<td th:text="#{board.title}">제목</td>
+				<td><input type="text" name="title" th:field="*{title}" readonly="readonly" /></td>
+			</tr>
+			<tr>
+				<td th:text="#{board.writer}">작성자</td>
+				<td><input type="text" name="writer" th:field="*{writer}" readonly="readonly" /></td>
+			</tr>
+			<tr>
+				<td th:text="#{board.content}">내용</td>
+				<td><div name="content" th:field="*{content}" readonly="readonly"></div></td>
+			</tr>
+		</table> -->
 	</form>
 	
 	<div th:with="pinfo=${#authentication.principal}">
@@ -46,35 +62,7 @@
 	
 		<button type="submit" id="btnList" th:text="#{action.list}" class="boardBtn2">목록으로</button>
 	</div>
-	<div class="">
-    <div class=""> Write a Comment</div>
-    <form id="comment" th:object="${comment}">
-        <th:block sec:authorize="hasRole('MEMBER')">
-        	<div>
-        	<input type="text" name="commentWriter" id="commentWriter" th:field="*{writer}" readonly="readonly" />
-        	</div>
-            <div class="card-body">
-                <textarea id="commentval" class="form-control" rows="4" th:field="*{comment}" placeholder="댓글을 입력하세요"></textarea>
-            </div>
-            <div class="card-footer">
-                <button type="button" id="btnCommentSave"> 등록</button>
-            </div>
-        </th:block>
-        
-        <th:block sec:authorize="!hasRole('MEMBER')">
-        <div class="card-body" style="font-size: small"><a href="/auth/login">로그인</a>을 하시면 댓글을 등록할 수 있습니다.</div>
-        </th:block>
-    </form>
-	</div>
-	<div id = "cntReload" th:each="comment : ${board.comments}">
-		<input type="hidden" id="id" th:value="${comment.id}">
-		<span th:text="${comment.writer}">dd</span>
-		<span th:text="${comment.regDate}"></span>
-		<button type="button" >수정</button>
-		<button type="button" id="btnCmtRemove">삭제</button>
-		<br>
-		<textarea id = "content" th:text="${comment.comment}"></textarea>
-	</div>
+	
 	<script>
 		$(document).ready(function() {
 	
@@ -102,70 +90,6 @@
 				self.location = "/board/list[(${pgrq.toUriString()})]";
 			});
 	
-			$("#btnCmtRemove").on("click", function() {
-				cmtRemove($("#id").val());
-				$("#cntReload").load(location.href + " #cntReload");
-				alert($("#id").val());
-			});
-			const main = {
-				init : function() {
-					const _this = this;
-					
-					$("#btnCommentSave").on("click", function() {
-						_this.commentSave();
-						alert("댓글이 등록 되었습니다");
-						alert($("#id").val());
-					});
-				},
-				commentSave : function() {
-					const data = {
-						boardNo: $("#boardNo").val(),
-						writer: $("#commentWriter").val(),
-						comment: $("#commentval").val(),
-						
-					}
-					console.log(data.boadNo);
-					console.log(data.writer);
-					console.log(data.comment);
-					if(!data.comment || data.comment.trim() === "") {
-						alert("공백 또는 입력하지 않은 부분이 있습니다.");
-						return false;
-					} else  {
-						$.ajax({
-							type: "POST",
-							url: "/comment/"+data.boardNo+"/addComment",
-							dataType: "JSON",
-							contentType: "application/json; charset=utf-8",
-							data: JSON.stringify(data)
-						}).done(function () {
-							alert('댓글이 등록되었습니다.');
-							window.location.reload();
-						});
-					}
-				}
-				
-			};
-			
-			main.init();
-			
-			
-			cmtRemove = function(id) {
-				const check = confirm("댓글을 삭제하시겠습니까?");
-				if(check === true) {
-					$.ajax({
-						type: "POST",
-						url: "/comment/remove/"+id,
-						dataType: "JSON",
-						success : function(result){
-							console.log(id);
-							document.location.href = document.location.href;
-							
-							alert("댓글 삭제완료");
-						}
-					});
-				}
-			}
-			
 		});
 	</script>
 </div>

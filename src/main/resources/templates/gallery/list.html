@@ -18,26 +18,38 @@
 		</div>
 	</th:block>
 	
-	<ul class="boardList" th:with="galleryList=${pgntn.page.content}">
-		<li class="ListTitle">
+	<ul class="galleryList" th:with="galleryList=${pgntn.page.content}">
+		<!-- <li class="ListTitle">
 			<div th:text="#{board.no}">번호</div>
 			<div th:text="#{board.title}">제목</div>
 			<div th:text="#{board.writer}">작성자</div>
 			<div th:text="#{board.view}">조회수</div>
 			<div th:text="#{board.regdate}">등록일시</div>
-		</li>
+		</li> -->
 		<li th:if="${#lists.isEmpty(galleryList)}">
 			List is empty.
 		</li>
 		
 		<li th:each="gallery : ${galleryList}">
+			<a href="read.html" th:href="@{|/gallery/read${pgrq.toUriString()}&galleryNo=${gallery.galleryNo}|}">
+				<div th:utext="|<img src=${gallery.content}>|"></div>
+				<div th:text="${gallery.title}" class="galleryTitle">${gallery.title}</div>
+				<div class="txtWrap">
+					<div th:text="${gallery.writer}">${gallery.writer}</div>
+					<div>조회수</div><div><span class="viewText" th:text="${gallery.view}">${gallery.view}</span></div>
+					<div th:text="${#temporals.format(gallery.regDate, 'yy/MM/dd HH:mm')}">등록일시</div>
+				</div>
+			</a>
+		</li>
+		
+		<!-- <li th:each="gallery : ${galleryList}">
 			<div th:text="${gallery.galleryNo}">${gallery.galleryNo}</div>
 			<div><a href="read.html" th:href="@{|/gallery/read${pgrq.toUriString()}&galleryNo=${gallery.galleryNo}|}" th:text="${gallery.title}">${gallery.title}</a></div>
-			<div style="width:100px;height:100px;" th:utext="|<img width=100px height=100px src=${gallery.content}>|"></div>
+			<div style="width:100px;height:100px;" th:utext="|<img width=300px height=200px src=${gallery.content}>|"></div>
 			<div th:text="${gallery.writer}">${gallery.writer}</div>
 			<div><span class="viewText" th:text="${gallery.view}">${gallery.view}</span></div>
 			<div th:text="${#temporals.format(gallery.regDate, 'yy/MM/dd HH:mm')}">등록일시</div>
-		</li>
+		</li> -->
 	</ul>
 	
 	<div class="paging">

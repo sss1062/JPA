@@ -77,6 +77,18 @@ nav>ul>li.login span:first-child {margin-right: 10px;}
 .readTitle {text-align:left; padding-bottom:10px;}
 .readContent {padding-left:10px; text-align:left; margin-bottom:20px; padding-bottom:20px; border-bottom:3px solid #ffaf38;}
 
+/* 갤러리 */
+.galleryList {display:flex; flex-wrap:wrap;}
+.galleryList li {width:290px; height:200px; margin-right:15px; margin-bottom:100px;}
+.galleryList li:nth-child(3n) {margin-right:0;}
+.galleryList li img {width:100%; height:200px;}
+.galleryList li:hover .galleryTitle {text-decoration:underline;}
+.galleryTitle {margin-top:10px; text-align:left; font-weight:bold; font-size: 18px;}
+.txtWrap {display:flex; margin-top:10px;}
+.txtWrap div {font-size:14px;}
+.txtWrap div:nth-child(1){margin-right: 10px;}
+.txtWrap div:nth-child(2){margin-right: 5px;}
+.txtWrap div:nth-child(3){margin-right: 10px;}
 
 /* 푸터 */
 .footerWrap {border-top:1px solid #a0a0a0; margin-top:20px; padding-bottom:20px;}
@@ -89,6 +101,14 @@ footer .flogo span {display: inline-block; margin-left: -22px; color:#ffaf38; fo
 
 @media (max-width: 1200px){
     footer {width: 95%;}
+}
+
+@media (max-width: 900px){
+	.galleryList {width:95%;}
+	.galleryList li {width:49%; height:250px; margin-right:2%;}
+	.galleryList li img {height:250px;}
+	.galleryList li:nth-child(2n) {margin-right:0;}
+	.galleryList li:nth-child(3n) {margin-right:2%;}
 }
 
 @media (max-width: 768px){
@@ -108,6 +128,10 @@ footer .flogo span {display: inline-block; margin-left: -22px; color:#ffaf38; fo
     .boardList>li>div:nth-child(3) {text-align:left; padding-left: 30px; font-size: 13px; color:#adadad;}
     .boardList>li>div:nth-child(4) {width:100px; font-size: 13px; color:#adadad;}
     .boardList>li>div:nth-child(5) {font-size: 13px; color:#adadad;}
+    
+	.galleryList li {width:100%; margin-right:0;}
+	.galleryList li img {height:250px;}
+	.galleryList li:nth-child(3n) {margin-right:0;}
     
     footer {display: block; text-align: center;}
 }
